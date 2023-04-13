@@ -1,21 +1,21 @@
 // Import necessary modules
-const axios = require("axios");
+const admin = require("firebase-admin");
 
 // Define login function
 const login = async (email, password) => {
   try {
-    // Make POST request to login endpoint
-    const response = await axios.post("http://localhost:3000/login", {
-      email: email,
-      password: password,
-    });
+    // Sign in the user with Firebase Authentication
+    const userCredential = await admin
+      .auth()
+      .signInWithEmailAndPassword(email, password);
 
-    // Extract and return the user data
-    const { uid, idToken, refreshToken } = response.data;
+    // Return the UID (User ID) and ID Token of the authenticated user
+    const { uid, refreshToken } = userCredential.user;
+    const idToken = await userCredential.user.getIdToken();
     return { uid, idToken, refreshToken };
   } catch (error) {
     // Handle any errors that may occur
-    console.error("Error logging in:", error.response.data.error);
+    console.error("Error logging in:", error.message);
     return null;
   }
 };

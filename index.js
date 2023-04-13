@@ -2,6 +2,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const admin = require("firebase-admin");
+const login = require("./api/login");
+const signup = require("./api/signup");
 
 // Load the service account key JSON file
 const serviceAccount = require("/json/foodybuddy-8547f-firebase-adminsdk-ak7o7-8d885db24c.json");
@@ -16,38 +18,39 @@ const app = express();
 app.use(bodyParser.json());
 
 // Define login endpoint
-app.post("/api/login", async (req, res) => {
+app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Sign in the user with Firebase Authentication
-    const userCredential = await admin
-      .auth()
-      .signInWithEmailAndPassword(email, password);
+    // Call the login function from api/login.js
+    const user = await login(email, password);
 
-    // Return the UID (User ID) and ID Token of the authenticated user
-    const { uid, refreshToken } = userCredential.user;
-    const idToken = await userCredential.user.getIdToken();
-    res.json({ uid, idToken, refreshToken });
+    // If login is successful, return the user data
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(401).json({ error: "Invalid email or password" });
+    }
   } catch (error) {
     // Handle any errors that may occur
-    res.status(401).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 });
 
 // Define signup endpoint
-app.post("/api/signup", async (req, res) => {
+app.post("/signup", async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Create a new user in Firebase Authentication
-    const userRecord = await admin.auth().createUser({
-      email: email,
-      password: password,
-    });
+    // Call the signup function from api/signup.js
+    const user = await signup(email, password);
 
-    // Return the UID (User ID) of the newly created user
-    res.json({ uid: userRecord.uid });
+    // If signup is successful, return the user data
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(500).json({ error: "Failed to create user" });
+    }
   } catch (error) {
     // Handle any errors that may occur
     res.status(500).json({ error: error.message });

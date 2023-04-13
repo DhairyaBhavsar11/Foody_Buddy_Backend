@@ -1,21 +1,34 @@
 // Import necessary modules
-const axios = require("axios");
+const admin = require("firebase-admin");
 
 // Define signup function
-const signup = async (email, password) => {
+const signup = async (
+  email,
+  password,
+  firstname,
+  lastname,
+  confirmpassword,
+  phoneNumber
+) => {
   try {
-    // Make POST request to signup endpoint
-    const response = await axios.post("http://localhost:3000/signup", {
+    // Check if password and confirm password match
+    if (password !== confirmpassword) {
+      throw new Error("Password and confirm password do not match");
+    }
+
+    // Create a new user in Firebase Authentication
+    const userRecord = await admin.auth().createUser({
       email: email,
       password: password,
+      displayName: `${firstname} ${lastname}`,
+      phoneNumber: phoneNumber,
     });
 
-    // Extract and return the user UID
-    const { uid } = response.data;
-    return uid;
+    // Return the UID (User ID) of the newly created user
+    return { uid: userRecord.uid };
   } catch (error) {
     // Handle any errors that may occur
-    console.error("Error signing up:", error.response.data.error);
+    console.error("Error signing up:", error.message);
     return null;
   }
 };
