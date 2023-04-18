@@ -4,7 +4,18 @@ const mongoose = require("mongoose");
 const Restaurant = mongoose.model("Restaurant");
 
 router.post("/restaurantSignUp", (req, res) => {
-  const { restaurantName, email, password, confirmPassword, mobile } = req.body;
+  const {
+    restaurantName,
+    email,
+    password,
+    confirmPassword,
+    mobile,
+    openHours,
+    addressLineOne,
+    addressLineTwo,
+    latitude,
+    longitude,
+  } = req.body;
   //   var userName = helper.generateUsername(email);
   Restaurant.findOne({ email: email }).then(async (savedRestaurant) => {
     // console.log(savedUser);
@@ -20,6 +31,11 @@ router.post("/restaurantSignUp", (req, res) => {
       password,
       mobile,
       status,
+      openHours,
+      addressLineOne,
+      addressLineTwo,
+      latitude,
+      longitude,
     });
     try {
       await restaurant.save();

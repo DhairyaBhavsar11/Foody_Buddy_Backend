@@ -19,10 +19,13 @@ mongoose.connect(database.url);
 
 //Models
 require("./models/restaurant");
+require("./models/food");
 
 // Routes
 const auth = require("./routes/restaurantAuth");
+const food = require("./routes/addFood");
 app.use(auth);
+app.use(food);
 
 app.get("/", function (req, res) {});
 
@@ -34,6 +37,11 @@ app.post("/restaurantSignUp", function (req, res) {
 app.post("/login", function (req, res) {
   console.log(req.body);
   res.send("Login API Called");
+});
+
+app.post("/addFood", function (req, res) {
+  console.log(req.body);
+  res.send("addFood API Called");
 });
 
 app.listen(port);
