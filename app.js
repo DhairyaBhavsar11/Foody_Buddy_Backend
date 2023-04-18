@@ -3,6 +3,12 @@ var mongoose = require("mongoose");
 var app = express();
 var database = require("./config/database");
 var bodyParser = require("body-parser");
+const cors = require("cors");
+app.use(
+  cors({
+    origin: "http://127.0.0.1:5500",
+  })
+);
 
 var port = process.env.PORT || 8081; // parse application/vnd.api+json as json
 app.use(bodyParser.urlencoded({ extended: "true" })); // parse application/x-www-form-urlencoded
@@ -10,7 +16,11 @@ app.use(bodyParser.json()); // parse application/json
 app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
 mongoose.connect(database.url);
+
+//Models
 require("./models/restaurant");
+
+// Routes
 const auth = require("./routes/auth");
 app.use(auth);
 

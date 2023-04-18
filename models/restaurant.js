@@ -17,3 +17,16 @@ const restaurantSchema = new Schema({
 });
 
 module.exports = mongoose.model("Restaurant", restaurantSchema);
+
+// // restaurantName,
+// description,
+// email,
+// password,
+// mobile,
+// openHours,
+// addressLineOne,
+// addressLineTwo,
+// addressLineThree,
+// latitude,
+// longitude,
+// status,
