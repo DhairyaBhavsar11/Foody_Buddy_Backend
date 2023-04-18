@@ -20,12 +20,14 @@ mongoose.connect(database.url);
 //Models
 require("./models/restaurant");
 require("./models/food");
-
+require("./models/user");
 // Routes
 const auth = require("./routes/restaurantAuth");
 const food = require("./routes/addFood");
+const user = require("./routes/addUser");
 app.use(auth);
 app.use(food);
+app.use(user);
 
 app.get("/", function (req, res) {});
 
@@ -42,6 +44,16 @@ app.post("/login", function (req, res) {
 app.post("/addFood", function (req, res) {
   console.log(req.body);
   res.send("addFood API Called");
+});
+
+app.post("/userSignUp", function (req, res) {
+  console.log(req.body);
+  res.send("restaurantSignUp API Called");
+});
+
+app.post("/userLogin", function (req, res) {
+  console.log(req.body);
+  res.send("Login API Called");
 });
 
 app.listen(port);
