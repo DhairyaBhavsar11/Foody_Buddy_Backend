@@ -21,7 +21,7 @@ mongoose.connect(database.url);
 require("./models/restaurant");
 
 // Routes
-const auth = require("./routes/auth");
+const auth = require("./routes/restaurantAuth");
 app.use(auth);
 
 app.get("/", function (req, res) {});
