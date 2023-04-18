@@ -31,5 +31,10 @@ app.post("/restaurantSignUp", function (req, res) {
   res.send("restaurantSignUp API Called");
 });
 
+app.post("/login", function (req, res) {
+  console.log(req.body);
+  res.send("Login API Called");
+});
+
 app.listen(port);
 console.log("App listening on port : " + port);

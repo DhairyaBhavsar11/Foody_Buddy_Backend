@@ -30,4 +30,25 @@ router.post("/restaurantSignUp", (req, res) => {
   });
 });
 
+router.post("/login", (req, res) => {
+  const { email, password } = req.body;
+
+  console.log("CALLED");
+  Restaurant.findOne({ email: email, password: password }).then(
+    async (savedRestaurant) => {
+      try {
+        if (savedRestaurant) {
+          res.send(savedRestaurant);
+        } else {
+          return res
+            .status(422)
+            .send({ label: "Opps!", message: "Invalid credentials !!" });
+        }
+      } catch (err) {
+        return res.status(422).send({ label: "Opps!", message: err.message });
+      }
+    }
+  );
+});
+
 module.exports = router;
