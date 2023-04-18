@@ -13,7 +13,7 @@ const {
 } = require("./api/restaurant");
 
 // Load the service account key JSON file
-const serviceAccount = require("/json/foodybuddy-8547f-firebase-adminsdk-ak7o7-8d885db24c.json");
+const serviceAccount = require("./json/foodybuddy-8547f-firebase-adminsdk-ak7o7-8d885db24c.json");
 
 // Initialize Firebase admin SDK
 admin.initializeApp({
