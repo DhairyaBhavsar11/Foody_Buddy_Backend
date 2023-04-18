@@ -8,7 +8,10 @@ const signup = async (
   firstname,
   lastname,
   confirmpassword,
-  phoneNumber
+  phoneNumber,
+  latitude,
+  longitude,
+  imageUrl
 ) => {
   try {
     // Check if password and confirm password match
