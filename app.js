@@ -143,5 +143,20 @@ app.post("/acceptTheOrder", async (req, res) => {
   res.send("acceptTheOrder API Called");
 });
 
+app.post("/updateProfile", async (req, res) => {
+  console.log(req.body);
+  res.send("updateProfile API Called");
+});
+
+app.post("/updateAddress", async (req, res) => {
+  console.log(req.body);
+  res.send("updateAddress API Called");
+});
+
+app.post("/updatePassword", async (req, res) => {
+  console.log(req.body);
+  res.send("updatePassword API Called");
+});
+
 app.listen(port);
 console.log("App listening on port : " + port);

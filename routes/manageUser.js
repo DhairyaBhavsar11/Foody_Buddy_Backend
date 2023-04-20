@@ -63,4 +63,76 @@ router.post("/userLogin", (req, res) => {
   });
 });
 
+router.post("/updateProfile", async (req, res) => {
+  // res.send({ label: "success", message: "Food added successfully..." });
+  const { userId, firstName, lastName, mobile } = req.body;
+
+  User.updateOne(
+    { _id: userId },
+    { $set: { firstName: firstName, lastName: lastName, mobile: mobile } },
+    null
+  )
+    .then((success) => {
+      // console.log(savedUser);
+      res.send({
+        label: "success",
+        message: "Your profile updated successfully...",
+      });
+    })
+    .catch((err) => {
+      return res.status(422).send({
+        label: "warning",
+        message: "Opps! Something went wrong !!!",
+      });
+    });
+});
+
+router.post("/updateAddress", async (req, res) => {
+  // res.send({ label: "success", message: "Food added successfully..." });
+  const { userId, address, latitude, longitude } = req.body;
+
+  User.updateOne(
+    { _id: userId },
+    { $set: { address: address, latitude: latitude, longitude: longitude } },
+    null
+  )
+    .then((success) => {
+      // console.log(savedUser);
+      res.send({
+        label: "success",
+        message: "Your address updated successfully...",
+      });
+    })
+    .catch((err) => {
+      return res.status(422).send({
+        label: "warning",
+        message: "Opps! Something went wrong !!!",
+      });
+    });
+});
+
+router.post("/updatePassword", async (req, res) => {
+  // res.send({ label: "success", message: "Food added successfully..." });
+  const { userId, oldPassword, newPassword } = req.body;
+
+  User.updateOne(
+    { _id: userId, password: oldPassword },
+    { $set: { password: newPassword } },
+    null
+  )
+    .then(() => {
+      // console.log(savedUser);
+      res.send({
+        label: "success",
+        message: "Your password changed successfully...",
+      });
+    })
+    .catch((err) => {
+      return res.status(422).send({
+        label: "warning",
+        message: err.message,
+      });
+    });
+});
+
 module.exports = router;
