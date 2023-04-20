@@ -67,4 +67,19 @@ router.post("/login", (req, res) => {
   );
 });
 
+router.post("/checkRestaurantIsRegisteredOrNot", (req, res) => {
+  const { restaurantId } = req.body;
+  //   var userName = helper.generateUsername(email);
+  Restaurant.findOne({ _id: restaurantId }).then(async (savedRestaurant) => {
+    // console.log(savedUser);
+    if (savedRestaurant) {
+      return res.send({
+        label: "success",
+      });
+    } else {
+      return res.status(422).send({ label: "warning" });
+    }
+  });
+});
+
 module.exports = router;

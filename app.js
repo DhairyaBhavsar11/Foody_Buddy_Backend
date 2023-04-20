@@ -3,12 +3,18 @@ var mongoose = require("mongoose");
 var app = express();
 var database = require("./config/database");
 var bodyParser = require("body-parser");
+const multer = require("multer");
+const path = require("path");
 const cors = require("cors");
 app.use(
   cors({
     origin: "http://127.0.0.1:5500",
   })
 );
+
+// TO access image from server
+const imagePath = path.join(__dirname, "imageStorage");
+app.use("/imageStorage", express.static(imagePath));
 
 var port = process.env.PORT || 8081; // parse application/vnd.api+json as json
 app.use(bodyParser.urlencoded({ extended: "true" })); // parse application/x-www-form-urlencoded
@@ -23,7 +29,7 @@ require("./models/food");
 require("./models/user");
 // Routes
 const auth = require("./routes/restaurantAuth");
-const food = require("./routes/addFood");
+const food = require("./routes/manageFood");
 const user = require("./routes/addUser");
 app.use(auth);
 app.use(food);
@@ -46,6 +52,16 @@ app.post("/addFood", function (req, res) {
   res.send("addFood API Called");
 });
 
+app.post("/getFoods", function (req, res) {
+  console.log(req.body);
+  res.send("getFoods API Called");
+});
+
+app.post("/updateFoodStatus", (req, res) => {
+  console.log(req.body);
+  res.send("updateFoodStatus API Called");
+});
+
 app.post("/userSignUp", function (req, res) {
   console.log(req.body);
   res.send("restaurantSignUp API Called");
@@ -54,6 +70,49 @@ app.post("/userSignUp", function (req, res) {
 app.post("/userLogin", function (req, res) {
   console.log(req.body);
   res.send("Login API Called");
+});
+
+app.post("/checkRestaurantIsRegisteredOrNot", (req, res) => {
+  console.log(req.body);
+  res.send("checkRestaurantIsRegisteredOrNot API Called");
+});
+
+var tempPath = "AB";
+
+function tempPathInit(path) {
+  tempPath = path;
+  return path;
+}
+// Image upload
+const storage = multer.diskStorage({
+  destination: "imageStorage/",
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      tempPathInit(
+        "FoodImages/Dish-" +
+          Date.now() +
+          "." +
+          file.originalname.split(".").pop()
+      )
+    );
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  fileFilter: function (req, file, cb) {
+    if (file.mimetype !== "image/jpeg" && file.mimetype !== "image/png") {
+      return cb(new Error("Only JPEG and PNG files are allowed"));
+    }
+    cb(null, true);
+  },
+});
+
+app.post("/uploadFoodImage", upload.single("file"), (req, res) => {
+  // console.log(req.file.filename);
+  // console.log(req.file.mimetype);
+  res.send({ label: "successImage", filePath: "imageStorage/" + tempPath });
 });
 
 app.listen(port);
