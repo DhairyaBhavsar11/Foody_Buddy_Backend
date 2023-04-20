@@ -82,4 +82,16 @@ router.post("/checkRestaurantIsRegisteredOrNot", (req, res) => {
   });
 });
 
+router.post("/getNearByRestaurants", (req, res) => {
+  //   var userName = helper.generateUsername(email);
+  Restaurant.find().then(async (savedRestaurant) => {
+    // console.log(savedUser);
+    if (savedRestaurant) {
+      return res.send(savedRestaurant);
+    } else {
+      return res.status(422).send({ label: "warning" });
+    }
+  });
+});
+
 module.exports = router;

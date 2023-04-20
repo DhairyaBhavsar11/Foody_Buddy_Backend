@@ -27,13 +27,16 @@ mongoose.connect(database.url);
 require("./models/restaurant");
 require("./models/food");
 require("./models/user");
+require("./models/order");
 // Routes
 const auth = require("./routes/restaurantAuth");
 const food = require("./routes/manageFood");
-const user = require("./routes/addUser");
+const user = require("./routes/manageUser");
+const order = require("./routes/manageOrder");
 app.use(auth);
 app.use(food);
 app.use(user);
+app.use(order);
 
 app.get("/", function (req, res) {});
 
@@ -64,12 +67,17 @@ app.post("/updateFoodStatus", (req, res) => {
 
 app.post("/userSignUp", function (req, res) {
   console.log(req.body);
-  res.send("restaurantSignUp API Called");
+  res.send("userSignUp API Called");
 });
 
 app.post("/userLogin", function (req, res) {
   console.log(req.body);
-  res.send("Login API Called");
+  res.send("userLogin API Called");
+});
+
+app.post("/getNearByRestaurants", (req, res) => {
+  console.log(req.body);
+  res.send("getNearByRestaurants API Called");
 });
 
 app.post("/checkRestaurantIsRegisteredOrNot", (req, res) => {
@@ -113,6 +121,26 @@ app.post("/uploadFoodImage", upload.single("file"), (req, res) => {
   // console.log(req.file.filename);
   // console.log(req.file.mimetype);
   res.send({ label: "successImage", filePath: "imageStorage/" + tempPath });
+});
+
+app.post("/addOrder", async (req, res) => {
+  console.log(req.body);
+  res.send("addOrder API Called");
+});
+
+app.post("/getOrderHistory", async (req, res) => {
+  console.log(req.body);
+  res.send("getOrderHistory API Called");
+});
+
+app.post("/getRestaurantsOrder", async (req, res) => {
+  console.log(req.body);
+  res.send("getRestaurantsOrder API Called");
+});
+
+app.post("/acceptTheOrder", async (req, res) => {
+  console.log(req.body);
+  res.send("acceptTheOrder API Called");
 });
 
 app.listen(port);

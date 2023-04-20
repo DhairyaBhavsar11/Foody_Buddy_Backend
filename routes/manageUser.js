@@ -21,9 +21,9 @@ router.post("/userSignUp", (req, res) => {
     if (savedUser) {
       return res
         .status(422)
-        .send({ label: "warning", message: "User already exists" });
+        .send({ label: "warning", message: "Email already exists" });
     }
-
+    let status = "Pending";
     const user = new User({
       firstName,
       lastName,
@@ -47,22 +47,20 @@ router.post("/userSignUp", (req, res) => {
 router.post("/userLogin", (req, res) => {
   const { email, password } = req.body;
 
-  console.log("CALLED");
-  Restaurant.findOne({ email: email, password: password }).then(
-    async (savedUser) => {
-      try {
-        if (savedUser) {
-          res.send(savedUser);
-        } else {
-          return res
-            .status(422)
-            .send({ label: "Opps!", message: "Invalid credentials !!" });
-        }
-      } catch (err) {
-        return res.status(422).send({ label: "Opps!", message: err.message });
+  // console.log("CALLED");
+  User.findOne({ email: email, password: password }).then(async (savedUser) => {
+    try {
+      if (savedUser) {
+        res.send(savedUser);
+      } else {
+        return res
+          .status(422)
+          .send({ label: "Opps!", message: "Invalid credentials !!" });
       }
+    } catch (err) {
+      return res.status(422).send({ label: "Opps!", message: err.message });
     }
-  );
+  });
 });
 
 module.exports = router;
